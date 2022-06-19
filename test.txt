@@ -1,0 +1,126 @@
+const API_KEY = 'AIzaSyBQIx6b7FXdaS2WPGsTJvQMWG3cyFQACRE'
+      class App extends React.Component{
+
+            state={videos: [],
+            selectedVideo: null
+            }
+            constructor(props){
+                  super(props)
+             this.SearchChange('SurfBoard')
+            }
+        SearchChange(term){
+            youtubeApiSearch({key:API_KEY,term:term},(data) => {
+                  this.setState({
+                        videos: data,
+                        selectedVideo: data[0]
+                  })
+            })
+        }
+
+render(){
+      if(!this.state.videos[0]){
+            return <div>Loading</div>
+      }
+      else{
+            return (
+            <div>
+                  <SearchBar onSearchChange={term =>this.SearchChange(term)}/> 
+                  <VideoList onVideoSelect = {selectedVideo =>(this.setState({selectedVideo}))} videos={this.state.videos}/>
+                  <VideoDetails videos={this.state.selectedVideo}/>
+            </div> 
+            );
+                  }
+      }
+}
+
+ReactDOM.render(<App/>,document.querySelector('.container'))
+
+
+
+
+
+
+-----------
+
+
+
+import React from "react"
+class SearchBar extends React.Component {
+    constructor(props){
+    super(props)
+    this.state= {
+         term:"Controlled Component " 
+         }    
+    }
+    render(){
+        return (
+        <div className="search-bar">
+            <input 
+            value={this.state.term}
+             onChange={event => this.onInputChange(event.target.value)}/>
+            value of input is : {this.state.term}
+        </div>
+            )
+    }
+    onInputChange(term){
+        // console.log(term)
+       this.setState( {term : term})
+        // this.props.onSearchChange(term)
+    }
+}
+
+export default SearchBar
+
+
+-------------- before key Expirey
+
+import React from "react"
+class SearchBar extends React.Component {
+    // onInputChange= (event)=>{
+    // console.log(event.target.value)
+    // }
+    state= { term:"Controlled Component " }
+    render(){
+        return (
+            <div className="search-bar">
+            <input 
+            value={this.state.term} onChange={(event) => this.setState( {term : event.target.value})}/>
+            value of input is : {this.state.term}
+        </div>
+            )
+    }
+}
+
+export default SearchBar
+
+--------------
+
+const API_KEY = 'AIzaSyAbmDJ7sR0cbwHf2k_ui-iElvJovCKpTww'
+      class App extends React.Component{
+            state={videos: [],
+            selectedVideo: null
+            }
+            constructor(props){
+                  super(props)
+                  youtubeApiSearch({key:API_KEY,term:'surfboards'},(data) => {
+                        this.setState({
+                              videos: data,
+                              selectedVideo: data[0]
+                        })
+                  })
+            }
+            render(){
+      if(!this.state.videos[0]){
+            return <div>Loading</div>
+      }
+      else{
+            return (
+            <div>
+                  <SearchBar/> 
+                  <VideoList onVideoSelect = {selectedVideo =>(this.setState({selectedVideo}))} videos={this.state.videos}/>
+                  <VideoDetails videos={this.state.selectedVideo}/>
+            </div> 
+            );
+                  }
+      }
+}
